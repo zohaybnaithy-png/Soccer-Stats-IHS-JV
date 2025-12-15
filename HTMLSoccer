@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Possession Efficiency Rating (PER)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>PER Calculator</h1>
+    <p class="subtitle">
+      Enter your stats, then click <b>Calculate</b>.
+    </p>
+
+    <form id="perForm">
+      <div class="grid">
+        <label>
+          Successful passes
+          <input type="number" id="successfulPasses" min="0" step="1" required />
+        </label>
+
+        <label>
+          Total pass attempts
+          <input type="number" id="totalPassAttempts" min="0" step="1" required />
+        </label>
+
+        <label>
+          Opportunities
+          <input type="number" id="opportunities" min="0" step="1" required />
+        </label>
+
+        <label>
+          Shots
+          <input type="number" id="shots" min="0" step="1" required />
+        </label>
+
+        <label>
+          Possessions
+          <input type="number" id="possessions" min="0" step="1" required />
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Calculate</button>
+        <button type="button" id="resetBtn" class="secondary">Reset</button>
+      </div>
+    </form>
+
+    <section class="result">
+      <h2>Result</h2>
+      <div id="output" class="output">—</div>
+      <div id="error" class="error" aria-live="polite"></div>
+      <details class="formula">
+        <summary>Show formula</summary>
+        <code>
+          PER = 1000 * ( ((0.5)*(successful passes/total pass attempts) + (0.5)*(shots/opportunities)) / possessions )
+        </code>
+      </details>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
