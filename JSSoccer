@@ -1,0 +1,72 @@
+const form = document.getElementById("perForm");
+const resetBtn = document.getElementById("resetBtn");
+const output = document.getElementById("output");
+const errorEl = document.getElementById("error");
+
+function getNum(id) {
+  return Number(document.getElementById(id).value);
+}
+
+function showError(msg) {
+  errorEl.textContent = msg;
+}
+
+function clearError() {
+  errorEl.textContent = "";
+}
+
+function formatNumber(n) {
+  // show up to 4 decimals, but trim trailing zeros
+  return n.toLocaleString(undefined, { maximumFractionDigits: 4 });
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  clearError();
+
+  const successfulPasses = getNum("successfulPasses");
+  const totalPassAttempts = getNum("totalPassAttempts");
+  const opportunities = getNum("opportunities");
+  const shots = getNum("shots");
+  const possessions = getNum("possessions");
+
+  // Basic validation
+  if ([successfulPasses, totalPassAttempts, opportunities, shots, possessions].some(n => !Number.isFinite(n) || n < 0)) {
+    showError("Please enter non-negative numbers for all fields.");
+    output.textContent = "—";
+    return;
+  }
+
+  if (totalPassAttempts === 0) {
+    showError("Total pass attempts cannot be 0 (division by zero).");
+    output.textContent = "—";
+    return;
+  }
+
+  if (opportunities === 0) {
+    showError("Opportunities cannot be 0 (division by zero).");
+    output.textContent = "—";
+    return;
+  }
+
+  if (possessions === 0) {
+    showError("Possessions cannot be 0 (division by zero).");
+    output.textContent = "—";
+    return;
+  }
+
+  // Formula:
+  // PER = 1000 * ( ((0.5)*(successful passes/total pass attempts) + (0.5)*(shots/opportunities)) / possessions )
+  const passRate = successfulPasses / totalPassAttempts;
+  const shotRate = shots / opportunities;
+
+  const per = 1000 * (((0.5 * passRate) + (0.5 * shotRate)) / possessions);
+
+  output.textContent = `${formatNumber(per)}%`;
+});
+
+resetBtn.addEventListener("click", () => {
+  form.reset();
+  output.textContent = "—";
+  clearError();
+});
